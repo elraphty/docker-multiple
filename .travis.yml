@@ -1,0 +1,25 @@
+sudo: required
+language: generic
+
+  services: 
+    - docker
+
+before_install: 
+  - docker build -t elraphty/react-test -f  ./client/Dockerfile.dev ./
+
+script: 
+  - docker run -e CI=true elraphty/react-test npm test
+
+after_success:
+  - docker build -t elraphty/multi-client ./client
+  - docker build -t elraphty/multi-nginx ./nginx
+  - docker build -t elraphty/multi-server ./server
+  - docker build -t elraphty/multi-worker ./worker
+    # Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take those images and push them to docker hub
+  - docker push elraphty/multi-client
+  - docker push elraphty/multi-nginx
+  - docker push elraphty/multi-server
+  - docker push elraphty/multi-worker
+
