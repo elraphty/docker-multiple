@@ -22,15 +22,4 @@ after_success:
   - docker push elraphty/multi-nginx
   - docker push elraphty/multi-server
   - docker push elraphty/multi-worker
-  
-deploy:
-  provider: elasticbeanstalk
-  region: 'us-east-2'
-  app: 'multi-docker-app'
-  env: 'Multidockerapp-env'
-  bucket_name: 'elasticbeanstalk-us-east-2-013582956519'
-  bucket_path: 'docker-multi'
-  on:
-    branch: master
-  access_key_id: $AWS_ACCESS_KEY
-  secret_access_key: $AWS_SECRET_KEY
+
